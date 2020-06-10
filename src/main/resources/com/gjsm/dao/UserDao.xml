@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.gjsm.dao.UserDao">
+
+    <!--resultType返回值类型-->
+    <!--parameterType传入参数类型-->
+    <select id="findAll" resultType="user">
+        select * from user
+    </select>
+
+    <select id="findAllName" resultType="com.gjsm.pojo.User" parameterType="java.lang.String">
+        <bind name="username" value="'%' + username + '%'"/>
+        select * from user where username like #{username}
+    </select>
+
+    <select id="findAllNameVO" resultType="com.gjsm.pojo.User" parameterType="java.lang.String">
+        <bind name="username" value="'%' + username + '%'"/>
+        select * from user where username like #{username}
+    </select>
+
+    <insert id="inseAll" parameterType="com.gjsm.pojo.User">
+        <selectKey keyProperty="id" keyColumn="id" resultType="java.lang.Integer" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+        INSERT INTO `user` (username, birthday, sex, address ) VALUES ( #{username}, #{birthday}, #{sex}, #{address})
+    </insert>
+
+    <delete id="deleAll" parameterType="java.lang.Integer">
+        DELETE FROM `user` where id=#{id}
+    </delete>
+
+    <update id="updaAll" parameterType="com.gjsm.pojo.User">
+        UPDATE `user` SET username=#{username},sex=#{sex} WHERE id=#{id}
+    </update>
+
+    <select id="findAllVO" resultType="com.gjsm.pojo.User" parameterType="com.gjsm.pojo.QueryVo">
+        select * from user where username like #{user.username}
+    </select>
+</mapper>
